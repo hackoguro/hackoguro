@@ -1,405 +1,378 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <!-- ВАЖНО: для мобильных экранов -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Академия Молодости</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Академия Молодости</title>
+<!-- Font Awesome для иконок (для кнопки связи) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #ffffff;
-      color: #000;
-      text-align: center;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #faf9f6;
+  color: #1a1a1a;
+  text-align: center;
+}
 
-    nav {
-      background: #000;
-      padding: 15px;
-    }
+nav {
+  background: #0d0d0d;
+  padding: 15px;
+}
 
-    nav button {
-      margin: 5px;
-      padding: 10px 20px;
-      border: none;
-      background: #fff;
-      color: #000;
-      cursor: pointer;
-      font-weight: bold;
-    }
+nav button {
+  margin: 5px;
+  padding: 10px 22px;
+  border: 1px solid #c6a95b;
+  background: transparent;
+  color: #c6a95b;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transition: 0.25s;
+}
 
-    nav button:hover { background: #ddd; }
+nav button:hover {
+  background: #c6a95b;
+  color: #000;
+}
 
-    .page {
-      display: none;
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 20px;
-    }
+.page {
+  display: none;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+}
 
-    .active { display: block; }
+.active { display: block; }
 
-    h1 { margin-bottom: 20px; }
+h1 {
+  margin-bottom: 10px;
+  color: #b8963a;
+  letter-spacing: 1px;
+}
 
-    /* КАРУСЕЛЬ */
-    .slider {
-      position: relative;
-      max-width: 900px;
-      margin: 20px auto;
-      margin-bottom: 300px;
-    }
+p {
+  color: #444;
+}
 
-    .slide {
-      display: none;
-      background: #f5f5f5;
-      min-height: 500px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      margin: 0 auto;
-    }
+/* КАРУСЕЛЬ */
+.slider {
+  position: relative;
+  max-width: 900px;
+  margin: 20px auto;
+}
 
-    .slide img {
-      max-width: 100%;
-      max-height: 500px;
-      width: auto;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
+.slide {
+  display: none;
+  background: #f4f1ea;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 10px 14px;
-      cursor: pointer;
-      z-index: 10;
-    }
+.slide img {
+  max-width: 100%;
+  max-height: 500px;
+  border-radius: 8px;
+}
 
-    .prev { left: 0; }
-    .next { right: 0; }
+/* СТРЕЛКИ */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #b8963a;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  cursor: pointer;
+}
 
-    /* ТОЧКИ-ИНДИКАТОРЫ */
-    .dots {
-      text-align: center;
-      margin-top: 15px;
-    }
+.prev { left: 0; }
+.next { right: 0; }
 
-    .dot {
-      height: 12px;
-      width: 12px;
-      margin: 0 5px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+/* ТОЧКИ */
+.dots {
+  margin-top: 70px;
+  margin-bottom: 250px
+}
 
-    .dot.active {
-      background-color: #000;
-    }
+.dot {
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  background: #d8c27a;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+}
 
-    /* ГАЛЕРЕЯ */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-      gap: 12px;
-      margin-top: 20px;
-    }
+.dot.active {
+  background: #b8963a;
+}
 
-    .gallery img { width: 100%; }
-
-    /* ТОВАРЫ */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .card {
-      border: 1px solid #ccc;
-      padding: 15px;
-    }
-
-    .price {
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    .buy {
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 10px 18px;
-      cursor: pointer;
-    }
-
-    .buy:hover { background: #333; }
-
-/* КАРТОЧКИ ДЛЯ ТЕКСТА (как у комментариев) */
+/* КАРТОЧКИ ДЛЯ ТЕКСТА */
 .info-card {
-  background: #f9f9f9;
+  background: #ffffff;
   border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-  margin-bottom: 30px;
-  text-align: center;
-  line-height: 1.6;
+  margin: 30px auto;
+  max-width: 700px;
+  border: 1px solid #e5d7a5;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.04);
 }
 
-.info-card p {
+/* ТОВАРЫ */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+  gap: 20px;
+}
+
+.card {
+  border: 1px solid #e5d7a5;
+  padding: 15px;
+  background: #fff;
+  border-radius: 10px;
+  transition: 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.price {
+  font-weight: bold;
   margin: 10px 0;
+  color: #b8963a;
 }
 
-.info-card p:first-child {
-  margin-top: 0;
+.buy {
+  background: #b8963a;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  cursor: pointer;
+  border-radius: 20px;
+  font-weight: bold;
 }
 
-.info-card p:last-child {
-  margin-bottom: 0;
+.buy:hover {
+  background: #a3842f;
 }
 
+/* ===== КНОПКА ОБРАТНОЙ СВЯЗИ ===== */
+.feedback-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #b8963a;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: transform 0.3s, background 0.3s;
+  border: none;
+}
+
+.feedback-button:hover {
+  transform: scale(1.05);
+  background: #a3842f;
+}
+
+.feedback-button i {
+  margin-right: 8px;
+}
+
+/* МОДАЛЬНОЕ ОКНО */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1001;
+}
+
+.modal-content {
+  background: white;
+  max-width: 500px;
+  margin: 100px auto;
+  padding: 30px;
+  border-radius: 16px;
+  position: relative;
+  border: 1px solid #e5d7a5;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #b8963a;
+}
+
+#feedbackForm input,
+#feedbackForm textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #e5d7a5;
+  border-radius: 8px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+#feedbackForm button {
+  background: #b8963a;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+#feedbackForm button:hover {
+  background: #a3842f;
+}
+
+/* Адаптация для мобильных */
 @media screen and (max-width: 600px) {
-  /* ... уже существующие стили ... */
-
-  .info-card {
+  .modal-content {
+    width: 90%;
+    margin: 50px auto;
     padding: 20px;
-    font-size: 15px;
+  }
+
+  .feedback-button {
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    font-size: 14px;
   }
 }
+/* Исправление ширины комментариев Cusdis */
+#cusdis_thread {
+  width: 100%;
+  max-width: 100%;
+}
 
-    /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
-    @media screen and (max-width: 600px) {
-      .page {
-        margin: 20px auto;
-        padding: 15px;
-      }
-
-      h1 {
-        font-size: 24px;
-      }
-
-      nav {
-        padding: 10px;
-      }
-
-      nav button {
-        display: block;
-        width: 100%;
-        margin: 5px 0;
-        padding: 12px;
-        font-size: 16px;
-      }
-
-      .slider {
-        margin-bottom: 150px;
-      }
-
-      .slide {
-        min-height: 300px;
-      }
-
-      .slide img {
-        max-height: 300px;
-      }
-
-      .arrow {
-        padding: 8px 12px;
-      }
-
-      .dot {
-        height: 10px;
-        width: 10px;
-      }
-
-      .card-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-
-      .modal-content {
-        width: 90%;
-        margin: 50px auto;
-        padding: 20px;
-      }
-
-      .feedback-button {
-        bottom: 20px;
-        right: 20px;
-        padding: 12px 20px;
-        font-size: 14px;
-      }
-
-      #cusdis_thread {
-        padding: 15px;
-      }
-
-      #cusdis_thread iframe {
-        height: 400px;
-      }
-    }
-  </style>
+#cusdis_thread iframe {
+  width: 100% !important;
+  height: 800px !important;  /* Увеличили высоту */
+  border: none;
+}
+</style>
 </head>
 
 <body>
 
 <nav>
-  <button onclick="showPage('home')">Главная</button>
-  <button onclick="showPage('shop')">Препараты</button>
-  <button onclick="showPage('contacts')">Контакты</button>
-  <button onclick="showPage('about')">О нас</button>
-  <button onclick="showPage('maps')">Карты</button>
+<button onclick="showPage('home')">Главная</button>
+<button onclick="showPage('shop')">Препараты</button>
+<button onclick="showPage('about')">О нас</button>
+<button onclick="showPage('contacts')">Контакты</button>
+<button onclick="showPage('maps')">Карта</button>
 </nav>
 
 <!-- ГЛАВНАЯ -->
 <div id="home" class="page active">
-  <h1>Академия Молодости</h1>
-  <p>Клиника врачебной косметологии и дерматоонкологии</p>
+<h1 class="logo-heading">
+  <img src="images/logo.png" alt="Академия Молодости" class="logo-image">
+</h1>
+<p>Клиника врачебной косметологии и дерматоонкологии</p>
 
-  <div class="slider" id="mainSlider">
-    <!-- Слайды создаются через JavaScript -->
-  </div>
+<div class="slider" id="slider"></div>
+<div class="dots" id="dots"></div>
 
-  <!-- ТОЧКИ-ИНДИКАТОРЫ -->
-  <div class="dots" id="sliderDots"></div>
+<!-- ========== БЛОК КОММЕНТАРИЕВ CUSDIS ========== -->
+<div id="cusdis_thread"
+  data-host="https://cusdis.com"
+  data-app-id="1ee0c6c2-d3ab-4c3d-8ee4-3e97d75afccb"
+  data-page-id="home"
+  data-page-title="Главная">
+</div>
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+<!-- ============================================== -->
 
-  <div id="cusdis_thread"
-    data-host="https://cusdis.com"
-    data-app-id="1ee0c6c2-d3ab-4c3d-8ee4-3e97d75afccb"
-    data-page-id="home"
-    data-page-title="Главная">
-  </div>
-  <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
-
-  <style>
-    /* УЛУЧШЕННЫЙ ДИЗАЙН КОММЕНТАРИЕВ */
-    #cusdis_thread {
-      width: 100%;
-      min-height: 300px;
-      margin: 40px 0;
-      padding: 30px;
-      background: #f9f9f9;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
-
-    #cusdis_thread iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-    }
-
-    #cusdis_thread textarea,
-    #cusdis_thread input[type="text"],
-    #cusdis_thread input[type="email"] {
-      border-radius: 30px !important;
-      border: 1px solid #ddd !important;
-      padding: 12px 18px !important;
-      font-size: 15px !important;
-      background: white;
-      width: 100% !important;
-    }
-
-    #cusdis_thread textarea:focus,
-    #cusdis_thread input:focus {
-      outline: none !important;
-      border-color: #999 !important;
-    }
-
-    #cusdis_thread button {
-      background: #000 !important;
-      color: white !important;
-      border-radius: 30px !important;
-      padding: 10px 24px !important;
-      font-weight: bold;
-      border: none;
-      transition: 0.2s;
-    }
-
-    #cusdis_thread button:hover {
-      background: #333 !important;
-    }
-
-    #cusdis_thread a[href*="cusdis.com"] {
-      opacity: 0.4;
-      font-size: 12px;
-      text-decoration: none;
-    }
-  </style>
-
-  <div style="height: 100px;"></div>
 </div>
 
-<!-- Препараты -->
+<!-- ПРЕПАРАТЫ -->
 <div id="shop" class="page">
-  <h1>Препараты</h1>
+<h1>Препараты</h1>
 
-  <div class="card-grid">
-    <div class="card">
-      <img src="https://picsum.photos/300/200?shirt">
-      <div class="price">Сыворотка молодости — 1990 ₽</div>
-      <a href="#"><button class="buy">Купить</button></a>
-    </div>
-
-    <div class="card">
-      <img src="https://picsum.photos/300/200?hoodie">
-      <div class="price">Коллаген — 3990 ₽</div>
-      <a href="#"><button class="buy">Купить</button></a>
-    </div>
-
-    <div class="card">
-      <img src="https://picsum.photos/300/200?cap">
-      <div class="price">Нити — 1490 ₽</div>
-      <a href="#"><button class="buy">Купить</button></a>
-    </div>
-  </div>
+<div class="card-grid">
+<div class="card">
+<img src="images/1.jpg" width="100%">
+<div class="price">Сыворотка — 1990 ₽</div>
+<button class="buy">Купить</button>
 </div>
 
-<!-- КОНТАКТЫ -->
-<div id="contacts" class="page">
-  <h1>Контакты</h1>
-  <div class="info-card">
-    <p>📧 Email: info@brand.ru</p>
-    <p>📱 Telegram: @DrIndi</p>
-    <p>📞 Телефон: +7 903 310-01-27</p>
-  </div>
+<div class="card">
+<img src="images/2.jpg" width="100%">
+<div class="price">Коллаген — 3990 ₽</div>
+<button class="buy">Купить</button>
+</div>
+
+<div class="card">
+<img src="images/3.jpg" width="100%">
+<div class="price">Нити — 1490 ₽</div>
+<button class="buy">Купить</button>
+</div>
+</div>
 </div>
 
 <!-- О НАС -->
 <div id="about" class="page">
-  <h1>О нас</h1>
-  <div class="info-card">
-    <p><strong>Услуги</strong> — Лазерная косметология. Инъекционные процедуры. Аппаратная косметология. Удаление новообразований. Чистка лица. Криокосметология. Озонотерапия / Карбокситерапия. Пилинги</p>
-    <p><strong>Массаж</strong> — Аппаратный массаж. Массаж лица</p>
-    <p><strong>SPA-процедуры</strong> — SPA для головы</p>
-    <p><strong>Услуги пирсинга</strong> — Классический прокол уха. Пирсинг носа. Пирсинг пупка. Пирсинг хряща уха</p>
-  </div>
+<h1>О нас</h1>
+<div class="info-card">
+Лазерная косметология · Инъекции · Аппаратные процедуры  
+Удаление новообразований · Пилинги · Чистка лица  
+Озонотерапия · Карбокситерапия · SPA  
+Массаж · Пирсинг
+</div>
 </div>
 
-<!-- КАРТЫ -->
+<!-- КОНТАКТЫ -->
+<div id="contacts" class="page">
+<h1>Контакты</h1>
+<div class="info-card">
+📧 info@brand.ru<br>
+📱 @DrIndi<br>
+📞 +7 903 310-01-27
+</div>
+</div>
+
+<!-- КАРТА -->
 <div id="maps" class="page">
-  <h1>Мы на карте</h1>
-  <div class="info-card">
-    <p>📍 ​Достоевского, 58, Уфа</p>
-  </div>
-
-  <!-- ИЗОБРАЖЕНИЕ КАРТЫ (уже в стиле карточки) -->
-  <div style="margin: 30px 0; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-    <img src="images/39.png" alt="Карта проезда" style="width: 100%; display: block;">
-  </div>
+<h1>Мы на карте</h1>
+<div class="info-card">
+📍 Достоевского 58, Уфа
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО С ФОРМОЙ -->
+<img src="images/39.png" style="width:100%;max-width:900px;border-radius:12px;">
+</div>
+
+<!-- ===== КНОПКА ОБРАТНОЙ СВЯЗИ ===== -->
+<div class="feedback-button" onclick="openFeedback()">
+  <i class="fa-regular fa-envelope"></i> Написать нам
+</div>
+
+<!-- ===== МОДАЛЬНОЕ ОКНО С ФОРМОЙ ===== -->
 <div id="feedbackModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeFeedback()">&times;</span>
@@ -413,212 +386,95 @@
   </div>
 </div>
 
-<style>
-  /* КНОПКА ОБРАТНОЙ СВЯЗИ */
-  .feedback-button {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #000;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    z-index: 1000;
-    transition: transform 0.3s;
-  }
-
-  .feedback-button:hover {
-    transform: scale(1.05);
-    background: #333;
-  }
-
-  .feedback-button i {
-    margin-right: 8px;
-  }
-
-  /* МОДАЛЬНОЕ ОКНО */
-  .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 1001;
-  }
-
-  .modal-content {
-    background: white;
-    max-width: 500px;
-    margin: 100px auto;
-    padding: 30px;
-    border-radius: 16px;
-    position: relative;
-  }
-
-  .close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
-    cursor: pointer;
-  }
-
-  #feedbackForm input,
-  #feedbackForm textarea {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-family: inherit;
-  }
-
-  #feedbackForm button {
-    background: #000;
-    color: white;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: bold;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  #feedbackForm button:hover {
-    background: #333;
-  }
-
-  /* МОБИЛЬНЫЕ ДОПОЛНЕНИЯ ДЛЯ ЭТИХ БЛОКОВ */
-  @media screen and (max-width: 600px) {
-    .modal-content {
-      width: 90%;
-      margin: 50px auto;
-      padding: 20px;
-    }
-
-    .feedback-button {
-      bottom: 20px;
-      right: 20px;
-      padding: 12px 20px;
-      font-size: 14px;
-    }
-  }
-</style>
-
 <script>
-// ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
-let currentSlide = 0;
-let slideInterval;
-const totalSlides = 38; // Количество фото
+// Глобальные переменные для карусели
+let current = 0;
+const total = 38;
 
-// СОЗДАНИЕ СЛАЙДОВ
-function createSlides() {
-  const slider = document.querySelector('#mainSlider');
-  const dotsContainer = document.getElementById('sliderDots');
-  
-  // Очищаем контейнеры
-  slider.innerHTML = '';
-  dotsContainer.innerHTML = '';
-  
-  // Создаём слайды и точки
-  for (let i = 1; i <= totalSlides; i++) {
-    // Слайд
-    const slideDiv = document.createElement('div');
-    slideDiv.className = 'slide';
-    const img = document.createElement('img');
-    img.src = `images/${i}.jpg`;
-    img.alt = `Фото ${i}`;
-    slideDiv.appendChild(img);
-    slider.appendChild(slideDiv);
-    
-    // Точка
-    const dot = document.createElement('span');
-    dot.className = 'dot';
-    dot.onclick = () => goToSlide(i - 1);
-    dotsContainer.appendChild(dot);
+function createSlider(){
+  const slider = document.getElementById("slider");
+  const dots = document.getElementById("dots");
+
+  for(let i = 1; i <= total; i++){
+    const s = document.createElement("div");
+    s.className = "slide";
+    s.innerHTML = `<img src="images/${i}.jpg">`;
+    slider.appendChild(s);
+
+    const d = document.createElement("span");
+    d.className = "dot";
+    d.onclick = () => show(i-1);
+    dots.appendChild(d);
   }
-  
+
   // Добавляем стрелки
-  const prevBtn = document.createElement('button');
-  prevBtn.className = 'arrow prev';
-  prevBtn.onclick = () => changeSlide(-1);
-  prevBtn.innerHTML = '‹';
-  
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'arrow next';
-  nextBtn.onclick = () => changeSlide(1);
-  nextBtn.innerHTML = '›';
-  
+  const prevBtn = document.createElement("button");
+  prevBtn.className = "arrow prev";
+  prevBtn.onclick = () => change(-1);
+  prevBtn.innerHTML = "‹";
   slider.appendChild(prevBtn);
+
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "arrow next";
+  nextBtn.onclick = () => change(1);
+  nextBtn.innerHTML = "›";
   slider.appendChild(nextBtn);
-  
-  // Обновляем ссылку на слайды
-  slides = document.querySelectorAll(".slide");
-  showSlide(0);
+
+  show(0);
 }
 
-// ПОКАЗ СЛАЙДА
-function showSlide(n) {
+function show(n){
+  const slides = document.querySelectorAll(".slide");
+  const dots = document.querySelectorAll(".dot");
+
   slides.forEach(s => s.style.display = "none");
-  slides[n].style.display = "block";
-  
-  // Обновляем точки
-  const dots = document.querySelectorAll('.dot');
-  dots.forEach((dot, index) => {
-    dot.classList.toggle('active', index === n);
-  });
+  dots.forEach(d => d.classList.remove("active"));
+
+  slides[n].style.display = "flex";
+  dots[n].classList.add("active");
+  current = n;
 }
 
-// ПЕРЕКЛЮЧЕНИЕ СЛАЙДОВ
-function changeSlide(step) {
-  currentSlide += step;
-  if (currentSlide >= slides.length) currentSlide = 0;
-  if (currentSlide < 0) currentSlide = slides.length - 1;
-  showSlide(currentSlide);
+function change(step){
+  current += step;
+  if(current >= total) current = 0;
+  if(current < 0) current = total - 1;
+  show(current);
 }
 
-// ПЕРЕХОД К КОНКРЕТНОМУ СЛАЙДУ
-function goToSlide(n) {
-  currentSlide = n;
-  showSlide(currentSlide);
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-// АВТОПРОКРУТКА
+// Запускаем создание слайдера
+createSlider();
+
+// ===== АВТОПРОКРУТКА =====
+let autoPlayInterval;
+
 function startAutoPlay() {
-  slideInterval = setInterval(() => {
-    changeSlide(1);
-  }, 3000);
+  if (autoPlayInterval) clearInterval(autoPlayInterval);
+  autoPlayInterval = setInterval(() => {
+    change(1); // листаем на один слайд вперёд
+  }, 3000); // каждые 3 секунды
 }
 
-// ОСТАНОВКА АВТОПРОКРУТКИ
 function stopAutoPlay() {
-  clearInterval(slideInterval);
+  clearInterval(autoPlayInterval);
 }
 
-// ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-}
+// Запускаем автопрокрутку
+startAutoPlay();
 
-// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
-window.onload = function() {
-  createSlides();
-  startAutoPlay();
-  
-  // Останавливаем автопрокрутку при наведении на слайдер
-  const slider = document.getElementById('mainSlider');
-  slider.addEventListener('mouseenter', stopAutoPlay);
-  slider.addEventListener('mouseleave', startAutoPlay);
-};
+// При наведении мыши на слайдер – останавливаем, при уходе – возобновляем
+const slider = document.getElementById('slider');
+slider.addEventListener('mouseenter', stopAutoPlay);
+slider.addEventListener('mouseleave', startAutoPlay);
 
-// КНОПКА ОБРАТНОЙ СВЯЗИ
+
+
+// ===== ФУНКЦИИ ДЛЯ КНОПКИ ОБРАТНОЙ СВЯЗИ =====
 function openFeedback() {
   document.getElementById('feedbackModal').style.display = 'block';
 }
@@ -635,19 +491,57 @@ window.onclick = function(event) {
   }
 }
 
-// Отправка формы (заглушка)
-document.getElementById('feedbackForm').onsubmit = function(e) {
+// ОТПРАВКА ФОРМЫ В TELEGRAM
+document.getElementById('feedbackForm').onsubmit = async function(e) {
   e.preventDefault();
-  alert('Спасибо! Мы свяжемся с вами.');
-  closeFeedback();
+  
+  // Получаем данные из формы
+  const name = document.querySelector('#feedbackForm input[placeholder="Ваше имя"]').value;
+  const email = document.querySelector('#feedbackForm input[placeholder="Email"]').value;
+  const message = document.querySelector('#feedbackForm textarea').value;
+  
+  // Токен вашего бота (из кода бота)
+  const BOT_TOKEN = "8244672460:AAFPKYPMv8OVllU8oGpIRsaom_36l-xekx8";
+  // Ваш Telegram ID (администратор)
+  const CHAT_ID = "7972016454";
+  
+  // Формируем текст сообщения
+  const text = `🔔 НОВОЕ СООБЩЕНИЕ С САЙТА\n\n👤 Имя: ${name}\n📧 Email: ${email}\n💬 Сообщение:\n${message}`;
+  
+  // URL для отправки сообщения в Telegram
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+  
+  try {
+    // Отправляем запрос
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: text,
+        parse_mode: 'HTML'
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (data.ok) {
+      alert('✅ Сообщение отправлено! Мы свяжемся с вами.');
+      // Очищаем форму
+      document.getElementById('feedbackForm').reset();
+      closeFeedback();
+    } else {
+      alert('❌ Ошибка при отправке. Попробуйте позже.');
+      console.error('Telegram error:', data);
+    }
+  } catch (error) {
+    alert('❌ Ошибка соединения. Проверьте интернет.');
+    console.error('Fetch error:', error);
+  }
 }
 </script>
-
-<!-- КНОПКА ОБРАТНОЙ СВЯЗИ (HTML) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<div class="feedback-button" onclick="openFeedback()">
-  <i class="fa-regular fa-envelope"></i> Написать нам
-</div>
 
 </body>
 </html>
