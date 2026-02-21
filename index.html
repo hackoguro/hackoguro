@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Академия Молодости</title>
-<!-- Font Awesome для иконок (для кнопки связи) -->
+<!-- Font Awesome для иконок -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
@@ -273,7 +273,7 @@ p {
 
 #cusdis_thread iframe {
   width: 100% !important;
-  height: 800px !important;  /* Увеличили высоту */
+  height: 800px !important;
   border: none;
 }
 </style>
@@ -299,7 +299,7 @@ p {
 <div class="slider" id="slider"></div>
 <div class="dots" id="dots"></div>
 
-<!-- ========== БЛОК КОММЕНТАРИЕВ CUSDIS ========== -->
+<!-- БЛОК КОММЕНТАРИЕВ CUSDIS -->
 <div id="cusdis_thread"
   data-host="https://cusdis.com"
   data-app-id="1ee0c6c2-d3ab-4c3d-8ee4-3e97d75afccb"
@@ -307,7 +307,6 @@ p {
   data-page-title="Главная">
 </div>
 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
-<!-- ============================================== -->
 
 </div>
 
@@ -363,23 +362,22 @@ p {
 <div class="info-card">
 📍 Достоевского 58, Уфа
 </div>
-
 <img src="images/39.png" style="width:100%;max-width:900px;border-radius:12px;">
 </div>
 
-<!-- ===== КНОПКА ОБРАТНОЙ СВЯЗИ ===== -->
+<!-- КНОПКА ОБРАТНОЙ СВЯЗИ -->
 <div class="feedback-button" onclick="openFeedback()">
   <i class="fa-regular fa-envelope"></i> Написать нам
 </div>
 
-<!-- ===== МОДАЛЬНОЕ ОКНО С ФОРМОЙ ===== -->
+<!-- МОДАЛЬНОЕ ОКНО С ФОРМОЙ -->
 <div id="feedbackModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeFeedback()">&times;</span>
     <h2>Обратная связь</h2>
     <form id="feedbackForm">
       <input type="text" placeholder="Ваше имя" required>
-      <input type="email" placeholder="Email" required>
+      <input type="tel" id="phoneInput" placeholder="Номер телефона" required>
       <textarea rows="5" placeholder="Ваше сообщение..." required></textarea>
       <button type="submit">Отправить</button>
     </form>
@@ -456,8 +454,8 @@ let autoPlayInterval;
 function startAutoPlay() {
   if (autoPlayInterval) clearInterval(autoPlayInterval);
   autoPlayInterval = setInterval(() => {
-    change(1); // листаем на один слайд вперёд
-  }, 3000); // каждые 3 секунды
+    change(1);
+  }, 3000);
 }
 
 function stopAutoPlay() {
@@ -471,8 +469,6 @@ startAutoPlay();
 const slider = document.getElementById('slider');
 slider.addEventListener('mouseenter', stopAutoPlay);
 slider.addEventListener('mouseleave', startAutoPlay);
-
-
 
 // ===== ФУНКЦИИ ДЛЯ КНОПКИ ОБРАТНОЙ СВЯЗИ =====
 function openFeedback() {
@@ -495,41 +491,28 @@ window.onclick = function(event) {
 document.getElementById('feedbackForm').onsubmit = async function(e) {
   e.preventDefault();
   
-  // Получаем данные из формы
   const name = document.querySelector('#feedbackForm input[placeholder="Ваше имя"]').value;
-  const email = document.querySelector('#feedbackForm input[placeholder="Email"]').value;
+  const phone = document.getElementById('phoneInput').value;
   const message = document.querySelector('#feedbackForm textarea').value;
   
-  // Токен вашего бота (из кода бота)
   const BOT_TOKEN = "8244672460:AAFPKYPMv8OVllU8oGpIRsaom_36l-xekx8";
-  // Ваш Telegram ID (администратор)
   const CHAT_ID = "7972016454";
   
-  // Формируем текст сообщения
-  const text = `🔔 НОВОЕ СООБЩЕНИЕ С САЙТА\n\n👤 Имя: ${name}\n📧 Email: ${email}\n💬 Сообщение:\n${message}`;
+  const text = `🔔 НОВОЕ СООБЩЕНИЕ С САЙТА\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n💬 Сообщение:\n${message}`;
   
-  // URL для отправки сообщения в Telegram
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
   
   try {
-    // Отправляем запрос
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: text,
-        parse_mode: 'HTML'
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'HTML' })
     });
     
     const data = await response.json();
     
     if (data.ok) {
       alert('✅ Сообщение отправлено! Мы свяжемся с вами.');
-      // Очищаем форму
       document.getElementById('feedbackForm').reset();
       closeFeedback();
     } else {
@@ -541,6 +524,14 @@ document.getElementById('feedbackForm').onsubmit = async function(e) {
     console.error('Fetch error:', error);
   }
 }
+</script>
+
+<!-- Подключение Inputmask и инициализация маски для телефона -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    Inputmask("+7 (999) 999-99-99").mask(document.getElementById('phoneInput'));
+  });
 </script>
 
 </body>
