@@ -264,7 +264,13 @@ p {
     padding: 12px 20px;
     font-size: 14px;
   }
-
+  /* Ограничиваем размер логотипа на мобильных */
+  .logo-image {
+    max-width: 90%;
+    width: 300px;      /* при необходимости подберите другое значение */
+    height: auto;
+    margin: 0 auto;
+  }
 }
 /* Исправление ширины комментариев Cusdis */
 #cusdis_thread {
@@ -537,6 +543,7 @@ document.getElementById('feedbackForm').onsubmit = async function(e) {
 
 </body>
 </html>
+
 
 
 
