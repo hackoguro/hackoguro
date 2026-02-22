@@ -250,6 +250,49 @@ p {
   background: #a3842f;
 }
 
+/* Кнопки контактов */
+.contact-btn {
+  display: block;
+  width: 100%;
+  margin: 12px 0;
+  padding: 15px 20px;
+  background: #f9f9f9;
+  border: 1px solid #e5d7a5;
+  border-radius: 50px;
+  color: #b8963a;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.contact-btn i {
+  margin-right: 12px;
+  width: 24px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.contact-btn:hover {
+  background: #b8963a;
+  color: #fff;
+  border-color: #b8963a;
+}
+
+/* Адаптация для мобильных */
+@media screen and (max-width: 600px) {
+  .contact-btn {
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+  .contact-btn i {
+    font-size: 16px;
+    width: 20px;
+  }
+}
+
 /* Адаптация для мобильных */
 @media screen and (max-width: 600px) {
   .modal-content {
@@ -355,12 +398,18 @@ p {
 
 <!-- КОНТАКТЫ -->
 <div id="contacts" class="page">
-<h1>Контакты</h1>
-<div class="info-card">
-📧 info@brand.ru<br>
-📱 @DrIndi<br>
-📞 +7 903 310-01-27
-</div>
+  <h1>Контакты</h1>
+  <div class="info-card">
+    <a href="mailto:info@brand.ru" class="contact-btn">
+      <i class="fas fa-envelope"></i> info@brand.ru
+    </a>
+    <a href="https://t.me/DrIndi" class="contact-btn" target="_blank">
+      <i class="fab fa-telegram"></i> @DrIndi
+    </a>
+    <a href="tel:+79033100127" class="contact-btn">
+      <i class="fas fa-phone-alt"></i> +7 903 310-01-27
+    </a>
+  </div>
 </div>
 
 <!-- КАРТА -->
@@ -543,9 +592,3 @@ document.getElementById('feedbackForm').onsubmit = async function(e) {
 
 </body>
 </html>
-
-
-
-
-
-
