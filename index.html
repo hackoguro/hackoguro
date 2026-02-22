@@ -326,6 +326,60 @@ p {
   height: 800px !important;
   border: none;
 }
+  nav {
+  position: relative;
+  overflow: hidden;
+}
+
+nav::before,
+nav::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 150px 150px; /* регулирует плотность "звёзд" */
+  background-repeat: repeat;
+  pointer-events: none; /* чтобы не перекрывать кнопки */
+  z-index: 1;
+}
+
+nav::before {
+  background-image: 
+    radial-gradient(circle at 10% 20%, #c6a95b 1px, transparent 1px),
+    radial-gradient(circle at 30% 50%, #c6a95b 2px, transparent 2px),
+    radial-gradient(circle at 70% 80%, #c6a95b 1px, transparent 1px),
+    radial-gradient(circle at 90% 40%, #c6a95b 1.5px, transparent 1.5px),
+    radial-gradient(circle at 45% 15%, #c6a95b 1px, transparent 1px),
+    radial-gradient(circle at 85% 70%, #c6a95b 2px, transparent 2px);
+  opacity: 0.3;
+  animation: twinkleGold 3s infinite ease-in-out;
+}
+
+nav::after {
+  background-image: 
+    radial-gradient(circle at 5% 75%, #c6a95b 1.5px, transparent 1.5px),
+    radial-gradient(circle at 65% 30%, #c6a95b 1px, transparent 1px),
+    radial-gradient(circle at 25% 60%, #c6a95b 2px, transparent 2px),
+    radial-gradient(circle at 95% 10%, #c6a95b 1px, transparent 1px),
+    radial-gradient(circle at 15% 85%, #c6a95b 1.5px, transparent 1.5px),
+    radial-gradient(circle at 55% 95%, #c6a95b 1px, transparent 1px);
+  opacity: 0.2;
+  animation: twinkleGold 4s infinite ease-in-out;
+  animation-delay: 1s;
+}
+
+@keyframes twinkleGold {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+nav button {
+  position: relative;
+  z-index: 2; /* кнопки поверх звёзд */
+}
 </style>
 </head>
 
@@ -617,6 +671,7 @@ document.getElementById('feedbackForm').onsubmit = async function(e) {
 
 </body>
 </html>
+
 
 
 
