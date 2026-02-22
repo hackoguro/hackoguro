@@ -604,7 +604,7 @@ document.getElementById('feedbackForm').onsubmit = async function(e) {
     played = true;
     music.play().catch(e => console.log('Автовоспроизведение не удалось:', e));
     // Удаляем обработчики после первого срабатывания
-    document.removeEventListener('touchstart', playMusic);
+    document.removeEventListener('click', playMusic);
     document.removeEventListener('mousemove', playMusic);
   }
 
@@ -617,5 +617,6 @@ document.getElementById('feedbackForm').onsubmit = async function(e) {
 
 </body>
 </html>
+
 
 
