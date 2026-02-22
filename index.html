@@ -590,5 +590,36 @@ document.getElementById('feedbackForm').onsubmit = async function(e) {
   });
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    Inputmask("+7 (999) 999-99-99").mask(document.getElementById('phoneInput'));
+  });
+</script>
+<audio id="bgMusic" loop preload="auto">
+  <source src="audio/background.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+(function() {
+  const music = document.getElementById('bgMusic');
+  let played = false;
+
+  function playMusic() {
+    if (played) return;
+    played = true;
+    music.play().catch(e => console.log('Автовоспроизведение не удалось:', e));
+    // Удаляем обработчики после первого срабатывания
+    document.removeEventListener('touchstart', playMusic);
+    document.removeEventListener('mousemove', playMusic);
+  }
+
+  // Мобильные устройства – касание
+  document.addEventListener('touchstart', playMusic);
+  // Компьютеры – движение мыши
+  document.addEventListener('mousemove', playMusic);
+})();
+</script>
+
 </body>
 </html>
